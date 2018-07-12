@@ -9,8 +9,8 @@ incFolder = 'inc'
 libFolder = 'lib'
 submodulesFolders = ['flexsea-comm', 'flexsea-shared', 'flexsea-system', 'flexsea-projects', 'flexsea-dephy']
 #Specific files:
-specFileNameList = ['flexsea_board.h', 'flexsea_config.h', 'libFlexSEA-Stack-Plan.a']
-specFileLocList = ['inc', 'inc', 'Release_static']
+specFileNameList = ['trapez.h', 'flexsea_board.h', 'flexsea_config.h', 'libFlexSEA-Stack-Plan.a']
+specFileLocList = ['inc', 'inc', 'inc', 'Release_static']
 
 #Find all directories in this path (recursive):
 def listDirectories(bp, dl):

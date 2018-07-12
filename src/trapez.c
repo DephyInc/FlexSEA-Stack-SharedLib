@@ -35,9 +35,15 @@
 //Comment the next line to use in your application:
 //#define DEBUGGING_OUTPUT
 
-#include "main.h"
+#include <stdint.h>
 #include <stdlib.h>
+#include <math.h>
 #include "trapez.h"
+
+
+#ifdef __cplusplus
+extern "C" {
+#endif
 
 //****************************************************************************
 // Local variable(s)
@@ -315,3 +321,8 @@ void trapez_gen_smooth_motion_1(long long pos_i,long long pos_f,long long spd_ma
 	smooth_A = 2*smooth_pos_f-2*smooth_pos_i;
 	smooth_max_steps = spd_max;	
 }
+
+
+#ifdef __cplusplus
+}
+#endif

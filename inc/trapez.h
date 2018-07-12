@@ -31,6 +31,10 @@
 #ifndef TRAPEZ_H_
 #define TRAPEZ_H_
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 //****************************************************************************
 // Include(s):
 //****************************************************************************
@@ -59,5 +63,9 @@ void trapez_gen_smooth_motion_1(long long,long long,long long);
 //****************************************************************************
 
 extern int32_t steps;
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif // TRAPEZ_H_

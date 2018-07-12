@@ -5,6 +5,7 @@ project(FlexSEA-Stack-Plan)
 set(SRCS
 	src/flexsea_board.c
 	src/flexsea_config.c
+	src/trapez.c
 )
 
 include_directories (
