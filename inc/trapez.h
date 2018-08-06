@@ -1,6 +1,6 @@
 /****************************************************************************
 	[Project] FlexSEA: Flexible & Scalable Electronics Architecture
-	[Sub-project] 'plan-gui' Graphical User Interface
+	[Sub-project] 'flexsea-execute' Advanced Motion Controller
 	Copyright (C) 2016 Dephy, Inc. <http://dephy.com/>
 
 	This program is free software: you can redistribute it and/or modify
@@ -16,80 +16,48 @@
 	You should have received a copy of the GNU General Public License
 	along with this program.  If not, see <http://www.gnu.org/licenses/>.
 *****************************************************************************
-	[Lead developper] Jean-Francois (JF) Duval, jfduval at dephy dot com.
-	[Origin] Based on Jean-Francois Duval's work at the MIT Media Lab
+	[Lead developper] Jean-Francois Duval, jfduval at dephy dot com.
+	[Origin] Based on Jean-Francois Duval's work at the MIT Media Lab 
 	Biomechatronics research group <http://biomech.media.mit.edu/>
 	[Contributors]
 *****************************************************************************
-	[This file] flexsea_board: configuration and functions for this
-	particular board
+	[This file] trapez: trapezoidal trajectory generation
 *****************************************************************************
 	[Change log] (Convention: YYYY-MM-DD | author | comment)
-	* 2016-09-09 | jfduval | Initial GPL-3.0 release
+	* 2016-09-29 | jfduval | Released under GPL-3.0 release
 	*
 ****************************************************************************/
 
-#ifndef INC_FLEXSEA_BOARD_H
-#define INC_FLEXSEA_BOARD_H
+#ifndef TRAPEZ_H_
+#define TRAPEZ_H_
 
-#ifdef __cplusplus
-extern "C" {
-#endif
+//****************************************************************************
+// Include(s):
+//****************************************************************************
 
-// Although it's a part of the FlexSEA stack that file doesn't live in
-// flexsea-comm or flexsea-system, as it needs to be unique to each board.
+//****************************************************************************
+// Public Function Prototype(s):
+//****************************************************************************
+
+long long trapez_gen_motion_1(long long pos_i, long long pos_f, \
+								long long spd_max, long long a);
+long long trapez_get_pos(long long max_steps);
+void trapez_gen_smooth_motion_1(long long,long long,long long);
+
 
 //****************************************************************************
 // Definition(s):
 //****************************************************************************
 
-#ifdef BUILD_SHARED_LIB_DLL
-
-//Enabled the required FlexSEA Buffers for this board:
-#define ENABLE_FLEXSEA_BUF_1        //USB
-#define ENABLE_FLEXSEA_BUF_2        //SPI
-//#define ENABLE_FLEXSEA_BUF_3      //
-//#define ENABLE_FLEXSEA_BUF_4      //
-//#define ENABLE_FLEXSEA_BUF_5      //
-
-#endif	//BUILD_SHARED_LIB_DLL
+#define TRAPEZ_DT           	0.001		//Trapezoidal timebase. Has to match hardware!
+#define TRAPEZ_ONE_OVER_DT  	1000
+#define SPD_FACTOR          	10000		//Scaling for integer
+#define ACC_FACTOR          	10000
 
 //****************************************************************************
-// Include(s)
+// Shared Variable(s):
 //****************************************************************************
 
-#ifdef BUILD_SHARED_LIB_DLL
-#include <stdint.h>
-#include "../flexsea-comm/inc/flexsea_comm.h"
-//#include "../flexsea-comm/inc/flexsea.h"
-#endif	//BUILD_SHARED_LIB_DLL
+extern int32_t steps;
 
-//****************************************************************************
-// Prototype(s):
-//****************************************************************************
-
-void flexsea_send_serial_slave(PacketWrapper* p);
-void flexsea_send_serial_master(PacketWrapper* p);
-
-#ifdef BUILD_SHARED_LIB_DLL
-uint8_t getBoardID(void);
-uint8_t getBoardUpID(void);
-uint8_t getBoardSubID(uint8_t sub, uint8_t idx);
-uint8_t getSlaveCnt(uint8_t sub);
-uint8_t getDeviceId();
-uint8_t getDeviceType();
-#endif	//BUILD_SHARED_LIB_DLL
-
-//****************************************************************************
-// Shared variable(s)
-//****************************************************************************
-
-#ifdef BUILD_SHARED_LIB_DLL
-extern uint8_t board_id;
-#endif	//BUILD_SHARED_LIB_DLL
-
-#ifdef __cplusplus
-}
-#endif
-
-#endif  //INC_FLEXSEA_BOARD_H
+#endif // TRAPEZ_H_

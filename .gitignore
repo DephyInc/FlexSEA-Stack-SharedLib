@@ -6,3 +6,8 @@
 *.mk
 *~
 *.bak
+/Release64/
+.settings/
+scripts/lib/
+/Release_static/
+build/
