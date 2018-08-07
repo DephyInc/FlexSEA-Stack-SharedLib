@@ -10,10 +10,6 @@ set(SRCS
 include_directories (
 	inc
 
-	flexsea-dephy/inc
-	flexsea-dephy/DpEb42/inc
-	flexsea-dephy/CycleTester/inc
-
 	flexsea-comm/inc
 
 	flexsea-projects/inc
@@ -26,10 +22,16 @@ include_directories (
 add_subdirectory(flexsea-comm)
 add_subdirectory(flexsea-system)
 add_subdirectory(flexsea-projects)
-add_subdirectory(flexsea-dephy)
+
+#include_directories (
+#	flexsea-dephy/inc
+#	flexsea-dephy/DpEb42/inc
+#	flexsea-dephy/CycleTester/inc
+#)
+#add_subdirectory(flexsea-dephy)
 
 add_definitions(-DBUILD_SHARED_LIB_DLL -DTEST_PC -DINCLUDE_UPROJ_ACTPACK -DBOARD_TYPE_FLEXSEA_PLAN)
-add_definitions(-DDEPHY)
+#add_definitions(-DDEPHY)
 
 add_library(FlexSEA-Stack-Plan_shared SHARED ${SRCS})
 set_property(TARGET FlexSEA-Stack-Plan_shared PROPERTY POSITION_INDEPENDENT_CODE ON)
