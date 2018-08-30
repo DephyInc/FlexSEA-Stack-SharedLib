@@ -322,7 +322,6 @@ void trapez_gen_smooth_motion_1(long long pos_i,long long pos_f,long long spd_ma
 	smooth_max_steps = spd_max;	
 }
 
-
 #ifdef __cplusplus
 }
 #endif
