@@ -6,6 +6,7 @@ set(SRCS
 	src/flexsea_board.c
 	src/flexsea_config.c
 	src/trapez.c
+	src/revision.c
 )
 
 include_directories (
