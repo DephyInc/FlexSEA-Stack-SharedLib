@@ -80,35 +80,46 @@ void initFlexSEAStack_minimalist(uint8_t id)
 }
 
 //Prepares the structures:
+//Note: Execute and Mn/M7 have better implementations. Check if we need two functions (Master and Slave)
+//for the API, if not copy loop code.
 void initMasterCommDefaults(void)
 {
+	Port p;
+
 	//SPI:
-	initCommPeriph(&commPeriph[PORT_SPI], PORT_SPI, MASTER, rx_buf_3, \
-				comm_str_3, rx_command_3, &rx_buf_circ_3, \
-				&packet[PORT_SPI][INBOUND], &packet[PORT_SPI][OUTBOUND]);
+	p = PORT_SPI;
+	initCommPeriph(&commPeriph[p], p, MASTER, \
+				comm_str[p], rx_command[p], &rx_buf_circ[p], \
+				&packet[p][INBOUND], &packet[p][OUTBOUND]);
 
 	//USB:
-	initCommPeriph(&commPeriph[PORT_USB], PORT_USB, MASTER, rx_buf_4, \
-			comm_str_4, rx_command_4, &rx_buf_circ_4, \
-			&packet[PORT_USB][INBOUND], &packet[PORT_USB][OUTBOUND]);
+	p = PORT_USB;
+	initCommPeriph(&commPeriph[p], p, MASTER, \
+			comm_str[p], rx_command[p], &rx_buf_circ[p], \
+			&packet[p][INBOUND], &packet[p][OUTBOUND]);
 
 	//Bluetooth:
-	initCommPeriph(&commPeriph[PORT_WIRELESS], PORT_WIRELESS, MASTER, rx_buf_5, \
-				comm_str_5, rx_command_5, &rx_buf_circ_5, \
-				&packet[PORT_WIRELESS][INBOUND], &packet[PORT_WIRELESS][OUTBOUND]);
+	p = PORT_WIRELESS;
+	initCommPeriph(&commPeriph[p], p, MASTER, \
+				comm_str[p], rx_command[p], &rx_buf_circ[p], \
+				&packet[p][INBOUND], &packet[p][OUTBOUND]);
 }
 
 void initSlaveCommDefaults(void)
 {
+	Port p;
+
 	//RS-485 #1:
-	initCommPeriph(&commPeriph[PORT_RS485_1], PORT_RS485_1, SLAVE, rx_buf_1, \
-			comm_str_1, rx_command_1, &rx_buf_circ_1, \
-			&packet[PORT_RS485_1][INBOUND], &packet[PORT_RS485_1][OUTBOUND]);
+	p = PORT_RS485_1;
+	initCommPeriph(&commPeriph[p], p, SLAVE, \
+			comm_str[p], rx_command[p], &rx_buf_circ[p], \
+			&packet[p][INBOUND], &packet[p][OUTBOUND]);
 
 	//UART:
-	initCommPeriph(&commPeriph[PORT_RS485_2], PORT_RS485_2, SLAVE, rx_buf_2, \
-			comm_str_2, rx_command_2, &rx_buf_circ_2, \
-			&packet[PORT_RS485_2][INBOUND], &packet[PORT_RS485_2][OUTBOUND]);
+	p = PORT_RS485_2;
+	initCommPeriph(&commPeriph[p], p, SLAVE, \
+			comm_str[p], rx_command[p], &rx_buf_circ[p], \
+			&packet[p][INBOUND], &packet[p][OUTBOUND]);
 }
 
 void mapSendSerialSlave(void (*f)(PacketWrapper* p))
