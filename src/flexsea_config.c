@@ -156,6 +156,7 @@ static void coreFlexSEAInit(uint8_t id)
 	initializeGlobalStructs();
 	initializeUserStructs();
 
+	init_execute();
 	init_rigid();
 	init_pocket();
 
