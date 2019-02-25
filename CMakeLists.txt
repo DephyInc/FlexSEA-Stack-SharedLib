@@ -41,19 +41,19 @@ set_property(TARGET FlexSea_objs PROPERTY POSITION_INDEPENDENT_CODE ON)
 ##  Create a psuedo-target to be created before the library
 IF(WIN32)
 add_custom_target(
-	revisionTarget
+	FsslRevTarget
 	COMMAND ${CMAKE_CURRENT_SOURCE_DIR}/update_revs.bat ${CMAKE_CURRENT_SOURCE_DIR}/inc/git_rev_data.h
 	COMMENT "Updating revision information"
 )
 ELSE()
 add_custom_target(
-	revisionTarget
+	FsslRevTarget
 	COMMAND ${CMAKE_CURRENT_SOURCE_DIR}/update_revs.sh ${CMAKE_CURRENT_SOURCE_DIR}/git-revision.py ${CMAKE_CURRENT_SOURCE_DIR}/inc/git_rev_data.h
 	COMMENT "Updating revision informatio"
 )
 ENDIF()
 
-add_dependencies(FlexSea_objs revisionTarget)
+add_dependencies(FlexSea_objs FsslRevTarget)
 
 if(WIN32)
 	set(OUT_PREF "win")
