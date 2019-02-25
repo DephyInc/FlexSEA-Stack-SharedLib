@@ -1,0 +1,1 @@
+gcc -o test.exe test.c -Iflexsea-comm/inc -Lbuild/win -lFlexSEA-Stack-Plan && test.exe
