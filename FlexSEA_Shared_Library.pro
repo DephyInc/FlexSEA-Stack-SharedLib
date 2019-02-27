@@ -193,3 +193,11 @@ unix {
     target.path = /usr/lib
     INSTALLS += target
 }
+
+# Update revision information
+PRE_TARGETDEPS      += git_rev_data.h
+QMAKE_EXTRA_TARGETS += sharedRevTarget
+sharedRevTarget.target = git_rev_data.h
+win32: sharedRevTarget.commands = cd $$PWD && python.exe $$PWD/git-revision.py -o $$PWD/inc/git_rev_data.h
+else:  sharedRevTarget.commands = python $$PWD/git-revision.py -o $$PWD/inc/git_rev_data.h
+sharedRevTarget.depends = FORCE
