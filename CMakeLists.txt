@@ -5,7 +5,6 @@ project(FlexSEA-Stack-Plan)
 set(CMAKE_CXX_STANDARD 14)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
-set(CMAKE_POSITION_INDEPENDENT_CODE ON)
 
 # Set some system-wide defaults
 if(WIN32)
@@ -24,9 +23,9 @@ set(SRCS
 	src/flexsea_board.c
 	src/flexsea_config.c
 	src/trapez.c
+	src/revision.c
 )
 
-# Point to all the place sto find header files
 include_directories (
 	inc
 	flexsea-comm/inc
@@ -34,29 +33,44 @@ include_directories (
 	flexsea-projects/ActPack/inc
 	flexsea-projects/Rigid/inc
 	flexsea-system/inc
+	flexsea-dephy/inc
+	flexsea-dephy/DpEb42/inc
+	flexsea-dephy/inc
+	flexsea-dephy/CycleTester/inc
 )
 
-# Add the individual libraries (projects)
 add_subdirectory(flexsea-comm)
 add_subdirectory(flexsea-system)
 add_subdirectory(flexsea-projects)
+add_subdirectory(flexsea-dephy)
+
+set(FLEXSEA_SRCFILES ${SRCS})
+add_library(FlexSea_objs OBJECT ${FLEXSEA_SRCFILES})
 
 add_definitions(-DBUILD_SHARED_LIB_DLL -DTEST_PC -DINCLUDE_UPROJ_ACTPACK -DBOARD_TYPE_FLEXSEA_PLAN)
-#add_definitions(-DDEPHY)
+#add_definitions(-DDEPHY -DACTIVE_DEPHY_PROJECT=PRJ_DEPHY_DPEB42 -DINCLUDE_UPROJ_DPEB42 -DINCLUDE_UPROJ_CYCLE_TESTER)
 
-add_library(FlexSEA-Stack-Plan_shared SHARED 
-	${SRCS}
-	${COMM_LIB_SRCS}
-	${PROJECTS_LIB_SRCS}
-	${SYSTEM_LIB_SRCS})
-set_property(TARGET FlexSEA-Stack-Plan_shared PROPERTY POSITION_INDEPENDENT_CODE ON)
+add_library(FlexSEA-Stack-Plan_shared SHARED $<TARGET_OBJECTS:FlexSea_objs>)
+add_library(FlexSEA-Stack-Plan STATIC $<TARGET_OBJECTS:FlexSea_objs>)
+set_property(TARGET FlexSea_objs PROPERTY POSITION_INDEPENDENT_CODE ON)
 
-add_library(FlexSEA-Stack-Plan STATIC
-	${SRCS}
-	${COMM_LIB_SRCS}
-	${PROJECTS_LIB_SRCS}
-	${SYSTEM_LIB_SRCS})
-set_property(TARGET FlexSEA-Stack-Plan PROPERTY POSITION_INDEPENDENT_CODE ON)
+## Force generation of the revsion header file BEFORE building the targets
+##  Create a psuedo-target to be created before the library
+IF(WIN32)
+add_custom_target(
+	revisionTarget
+	COMMAND ${CMAKE_CURRENT_SOURCE_DIR}/update_revs.bat ${CMAKE_CURRENT_SOURCE_DIR}/inc/git_rev_data.h
+	COMMENT "Updating revision information"
+)
+ELSE()
+add_custom_target(
+	revisionTarget
+	COMMAND ${CMAKE_CURRENT_SOURCE_DIR}/update_revs.sh ${CMAKE_CURRENT_SOURCE_DIR}/git-revision.py ${CMAKE_CURRENT_SOURCE_DIR}/inc/git_rev_data.h
+	COMMENT "Updating revision information"
+)
+ENDIF()
+
+add_dependencies(FlexSea_objs revisionTarget)
 
 set_target_properties( FlexSEA-Stack-Plan_shared 
     PROPERTIES
