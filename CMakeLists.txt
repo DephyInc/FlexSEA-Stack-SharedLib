@@ -2,6 +2,11 @@ cmake_minimum_required(VERSION 2.8.3)
 
 project(FlexSEA-Stack-Plan)
 
+set(CMAKE_CXX_STANDARD 14)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
+
+set(CMAKE_POSITION_INDEPENDENT_CODE ON)
+
 # Set some system-wide defaults
 if(WIN32)
 	set(OUT_PREF "win")
