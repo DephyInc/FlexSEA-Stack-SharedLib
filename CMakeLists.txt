@@ -14,6 +14,9 @@ set(SRCS
 	src/revision.c
 )
 
+set(CMAKE_C_STANDARD 11)
+set(CMAKE_C_STANDARD_REQUIRED ON)
+set(CMAKE_POSITION_INDEPENDENT_CODE ON)
 include_directories (
 	inc
 	flexsea-comm/inc
@@ -31,12 +34,16 @@ add_subdirectory(flexsea-comm)
 add_subdirectory(flexsea-system)
 add_subdirectory(flexsea-projects)
 add_subdirectory(flexsea-dephy)
+add_subdirectory(flexsea-shared)
 
 set(FLEXSEA_SRCFILES ${SRCS})
 add_library(FlexSea_objs OBJECT ${FLEXSEA_SRCFILES})
 
-add_definitions(-DBUILD_SHARED_LIB_DLL -DTEST_PC -DINCLUDE_UPROJ_ACTPACK -DBOARD_TYPE_FLEXSEA_PLAN)
-#add_definitions(-DDEPHY -DACTIVE_DEPHY_PROJECT=PRJ_DEPHY_DPEB42 -DINCLUDE_UPROJ_DPEB42 -DINCLUDE_UPROJ_CYCLE_TESTER)
+#add_definitions(-DBUILD_SHARED_LIB_DLL -DTEST_PC -DINCLUDE_UPROJ_ACTPACK -DBOARD_TYPE_FLEXSEA_PLAN)
+# The following is from the Ecliopse project Release_Static configuration.
+#  This appears to be the gold standard for building the library for the Plan 3 GUI.
+#  ToDo: Do we need to build any other configurations using this cmake file?
+add_definitions(-DBUILD_SHARED_LIB_DLL -DINCLUDE_UPROJ_CYCLE_TESTER -DINCLUDE_UPROJ_DPEB42 -DTEST_PC -DDEPHY -DINCLUDE_UPROJ_ACTPACK -DBOARD_TYPE_FLEXSEA_PLAN)
 
 add_library(FlexSEA-Stack-Plan_shared SHARED $<TARGET_OBJECTS:FlexSea_objs>)
 add_library(FlexSEA-Stack-Plan STATIC $<TARGET_OBJECTS:FlexSea_objs>)
@@ -46,24 +53,24 @@ set_property(TARGET FlexSea_objs PROPERTY POSITION_INDEPENDENT_CODE ON)
 ##  Create a psuedo-target to be created before the library
 IF(WIN32)
 add_custom_target(
-	revisionTarget
+	FsslRevTarget
 	COMMAND ${CMAKE_CURRENT_SOURCE_DIR}/update_revs.bat ${CMAKE_CURRENT_SOURCE_DIR}/inc/git_rev_data.h
 	COMMENT "Updating revision information"
 )
 ELSE()
 add_custom_target(
-	revisionTarget
+	FsslRevTarget
 	COMMAND ${CMAKE_CURRENT_SOURCE_DIR}/update_revs.sh ${CMAKE_CURRENT_SOURCE_DIR}/git-revision.py ${CMAKE_CURRENT_SOURCE_DIR}/inc/git_rev_data.h
 	COMMENT "Updating revision informatio"
 )
 ENDIF()
 
-add_dependencies(FlexSea_objs revisionTarget)
+add_dependencies(FlexSea_objs FsslRevTarget)
 
 if(WIN32)
 	set(OUT_PREF "win")
 else()
-	set(OUT_PREF "unix")	
+	set(OUT_PREF "unix")
 endif()
 
 if(CMAKE_SIZEOF_VOID_P GREATER 4)
