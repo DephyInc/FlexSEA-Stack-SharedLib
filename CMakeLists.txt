@@ -15,7 +15,7 @@ set(SRCS
 )
 
 include_directories (
-	inc
+	include
 	flexsea-comm/inc
 	flexsea-projects/inc
 	flexsea-projects/ActPack/inc
