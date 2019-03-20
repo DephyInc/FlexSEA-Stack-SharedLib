@@ -14,7 +14,7 @@ set(CMAKE_C_STANDARD_REQUIRED ON)
 set(CMAKE_POSITION_INDEPENDENT_CODE ON)
 
 include_directories (
-	inc
+	include
 	flexsea-comm/inc
 	flexsea-projects/inc
 	flexsea-projects/ActPack/inc
